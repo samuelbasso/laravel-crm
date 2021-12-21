@@ -1,0 +1,72 @@
+# ERPsoft.com.br
+
+<p align="center">
+<a href="https://gitlab.com/otimizysistemas/erpsoft.com.br/commits/master"><img alt="pipeline status" src="https://gitlab.com/otimizysistemas/erpsoft.com.br/badges/master/pipeline.svg" /></a>
+<a href="https://gitlab.com/otimizysistemas/erpsoft.com.br/commits/master"><img alt="coverage report" src="https://gitlab.com/otimizysistemas/erpsoft.com.br/badges/master/coverage.svg" /></a>
+</p>
+
+## Introdução
+
+Nossas aplicações estão utilizando a tecnologia Docker (contêineres). O objetivo é manter nossos ambientes e configurações iguais para todos os desenvolvedores e também para o ambiente de produção para evitar possíveis problemas.
+
+Abaixo explicamos como está configurado nossa estrutura e como você deve utilizar.
+
+## Requisitos para execução
+
+* Docker (https://www.docker.com/)
+* Git (https://git-scm.com/)
+* Visual Code (https://code.visualstudio.com/)
+
+## Ambiente de desenvolvimento
+
+* Não é mais necessário instalar php, mysql e outros aplicativos
+* Todo ambiente de desenvolvimento está configurado em contêineres gerados pelo Docker
+* Cada contêiner é configurado no arquivo Dockerfile na pasta docker da aplicação
+* Todo a criação de ambientes multicontêiner é realizado pelo DockerCompose configurados no arquivo docker-compose.yml
+* Os contêineres configurados são:
+    * php
+    * mysql
+    * nginx
+    * node
+    * phpmyadmin
+
+##  Docker
+
+* Usaremos o comando `docker-compose` para compilar a imagem do aplicativo e executar os serviços configurados
+* O comando `docker-compose build` compila a imagem e baixa as dependências necessárias
+* O comando `docker-compose up -d` executa as imagens compiladas e roda o ambiente em segundo plano
+* O comando `docker-compose ps` exibe as informações sobre o estado de cada serviço ativo
+* O comando `docker-compose run {nome_container}` executa comandos nos contêineres de serviço
+* O comando `docker-compose down` fecha seu ambiente e remove todos os contêineres, redes e volumes
+
+* Comandos extras:
+* Lista todos contêineres ativos `docker ps`
+* Lista todos contêineres ativos apenas IDs `docker ps -aq`
+* Para todos contêineres ativos `docker stop $(docker ps -aq)`
+* Remove todos contêineres `docker rm $(docker ps -aq)`
+* Remove todas imagens `docker rmi $(docker images -q)`
+
+## Instalação
+
+* Clonar o repósitório através do Git;
+* Copiar o arquivo `.env.example` para `.env` que tem confiurações prontas para banco de dados e outros
+* Compila os contêineres e executa eles conforme comandos listados no tópido ##Docker
+* Instalar as dependencias do aplicativo executando `docker-compose run --rm php composer install`
+* Gerar a chave única para o aplicativo com artisan `docker-compose run --rm php php artisan key:generate`
+* Instalar banco de dados  `docker-compose run --rm php php artisan migrate`
+* Popula o banco de dados com registros para testes  `docker-compose run --rm php php artisan db:seed`
+
+## Acessando ambiente
+
+* Para acessar a aplicação: http://localhost:8000
+* Para acessar o phpmyadmin: http://localhost:8080
+* Usuário e senha banco de dados mysql são os configurados no .env
+
+## Testes
+
+* Os testes do projeto podem ser executados através do comando `vendor/bin/phpunit`
+
+## Outros
+
+* Foram criados "atalhos" para execução de comandos dentro de contêineres, que se encontram na pasta `/docker/batch` (para host Windows) ou `/docker/shell` (para host Linux/MacOS);
+* Este projeto foi desenvolvido sobre o framework Laravel. Por isso, é necessário que as pastas `/boostrap/cache` e `/storage` tenham permissão de escrita.
