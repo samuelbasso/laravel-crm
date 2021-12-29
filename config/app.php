@@ -112,6 +112,7 @@ return [
     'available_locales' => [
         'en' => 'English',
         'ar' => 'Arabic',
+        'pt-br' => 'Português',
     ],
 
     /*
