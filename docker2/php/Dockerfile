@@ -15,6 +15,8 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 COPY docker2/php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY docker2/php/php.ini /usr/local/etc/php/conf.d/php.ini
+
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 

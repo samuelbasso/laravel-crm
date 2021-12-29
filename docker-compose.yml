@@ -19,6 +19,24 @@ services:
       - .:/var/www
     working_dir: /var/www
 
+  # php2:
+  #   build:
+  #     args:
+  #       USERNAME: defaultuser
+  #       USER_UID: 1000
+  #       USER_GID: 1000
+  #     context: .
+  #     dockerfile: ./docker/7.4/Dockerfile
+  #   environment:
+  #     DB_HOST: ${DB_HOST}
+  #     DB_DATABASE: ${DB_DATABASE}
+  #     DB_USERNAME: ${DB_USERNAME}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #   user: defaultuser
+  #   volumes:
+  #     - .:/var/www
+  #   working_dir: /var/www
+
   mysql:
     image: mysql:5.7
     environment:
