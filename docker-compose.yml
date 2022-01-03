@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  php:
+    build:
+      args:
+        USERNAME: defaultuser
+        USER_UID: 1000
+        USER_GID: 1000
+      context: .
+      dockerfile: ./docker2/Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 8000:80
+    user: defaultuser
+    volumes:
+      - .:/var/www
+    working_dir: /var/www
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - ./.datastorage:/var/lib/mysql
+
+  node:
+    image: node:15.3
+    user: node
+    volumes:
+      - .:/home/node
+    working_dir: /home/node
+
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    environment:
+     - PMA_ARBITRARY=1
+    ports:
+     - 8080:80
